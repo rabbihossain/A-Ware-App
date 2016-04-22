@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">A-Ware</string>
+    <string name="red">Applications</string>
+    <string name="blue">Permissions</string>
+    <string name="android.permission.INTERNET">Internet Access</string>
+
+</resources>

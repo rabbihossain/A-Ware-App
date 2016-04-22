@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="io.a_ware.a_ware">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:screenOrientation="portrait"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".permActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TCAppList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TCPermList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TCAppDetail"
+            android:screenOrientation="portrait" />
+
+        <service
+            android:name=".TCService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <receiver
+            android:name=".TCServiceReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".TCPermDetail"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".MockLocation"
+            android:screenOrientation="portrait" />
+
+    </application>
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
+
+</manifest>
