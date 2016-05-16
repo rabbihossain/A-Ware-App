@@ -54,7 +54,8 @@
         android:layout_alignLeft="@+id/imageButton"
         android:layout_alignStart="@+id/imageButton"
         android:layout_marginTop="57dp"
-        android:src="@drawable/rp" />
+        android:src="@drawable/rp"
+        android:onClick="rppClicked" />
 
     <ImageButton
         android:layout_width="100dp"

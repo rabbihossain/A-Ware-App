@@ -42,4 +42,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(mocklocintent);
     }
 
+    public void rppClicked(View view) {
+        Intent rppIntent = new Intent(this, RPP_Main.class);
+        startActivity(rppIntent);
+    }
+
 }
