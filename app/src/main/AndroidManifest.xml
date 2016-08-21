@@ -54,6 +54,9 @@
         </receiver>
         <receiver android:name=".IncomingSms">
             <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
@@ -64,9 +67,16 @@
         <activity
             android:name=".MockLocation"
             android:screenOrientation="portrait" />
-        <activity android:name=".RPP_Main" />
-        <activity android:name=".RPPSetPass" />
-        <activity android:name=".RPPGetPass"></activity>
+        <activity
+            android:name=".RPP_Main"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RPPSetPass"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RPPGetPass"
+            android:screenOrientation="portrait" />
+        <activity android:name=".logger"></activity>
     </application>
 
 </manifest>

@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Intent ishintent = new Intent(this, TCService.class);
+        startService(ishintent);
         PendingIntent pintent = PendingIntent.getService(this, 0, ishintent, 0);
         AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         alarm.cancel(pintent);
@@ -46,5 +47,14 @@ public class MainActivity extends AppCompatActivity {
         Intent rppIntent = new Intent(this, RPP_Main.class);
         startActivity(rppIntent);
     }
+
+    public void logClicked(View view) {
+        Intent Logger = new Intent(this, logger.class);
+        startActivity(Logger);
+    }
+
+
+
+
 
 }

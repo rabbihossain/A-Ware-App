@@ -36,7 +36,7 @@ public class TCService extends Service {
     }
 
     @Override
-    public void onStart(Intent intent, int startId) {
+    public int onStartCommand(Intent intent, int startId, int flags) {
         // Perform your long running operations here.
 
         final SharedPreferences permPreferences = getSharedPreferences("PERMISSION_VALUES_STORAGE", Context.MODE_PRIVATE);
@@ -85,6 +85,7 @@ public class TCService extends Service {
         }catch(Exception e) {
                 //Name Not FOund Exception
         }
+        return Service.START_STICKY;
     }
 
     @Override

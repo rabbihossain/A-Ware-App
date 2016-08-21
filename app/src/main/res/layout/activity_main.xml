@@ -65,7 +65,8 @@
         android:layout_alignTop="@+id/imageButton3"
         android:layout_alignLeft="@+id/imageButton2"
         android:layout_alignStart="@+id/imageButton2"
-        android:src="@drawable/gt" />
+        android:src="@drawable/gt"
+        android:onClick="logClicked" />
 
     <TextView
         android:layout_width="200dp"

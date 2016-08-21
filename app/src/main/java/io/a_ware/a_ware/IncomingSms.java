@@ -47,6 +47,7 @@ public class IncomingSms extends BroadcastReceiver {
 
                     final String senderNum = phoneNumber;
                     String message = currentMessage.getDisplayMessageBody();
+                    Log.i("SmsReceiver", "senderNum: "+ senderNum + "; message: " + message);
                     /*
                     Log.i("SmsReceiver", "senderNum: "+ senderNum + "; message: " + message);
 
