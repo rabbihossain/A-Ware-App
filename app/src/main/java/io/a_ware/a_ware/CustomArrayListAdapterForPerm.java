@@ -28,6 +28,8 @@ public class CustomArrayListAdapterForPerm extends ArrayAdapter<String> {
 
     }
 
+
+
     public View getView(int position,View view,ViewGroup parent) {
         LayoutInflater inflater=context.getLayoutInflater();
         View rowView=inflater.inflate(R.layout.tc_container, null,true);

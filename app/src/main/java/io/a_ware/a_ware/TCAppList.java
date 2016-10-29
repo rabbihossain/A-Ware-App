@@ -78,5 +78,16 @@ public class TCAppList extends AppCompatActivity {
 
             }
         });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView parentView, View childView, int position, long id) {
+                String Selecteditem = itemdetail.get(+position);
+
+                Intent intent = new Intent(TCAppList.this, logger.class);
+                intent.putExtra("pkgname", Selecteditem);
+                startActivity(intent);
+                return true;
+            }
+        });
     }
 }
