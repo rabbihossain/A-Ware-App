@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
@@ -40,6 +42,16 @@
 
         <service
             android:name=".TCService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <service
+            android:name=".loggerService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <service
+            android:name=".logWriter"
             android:enabled="true"
             android:exported="false" />
 
