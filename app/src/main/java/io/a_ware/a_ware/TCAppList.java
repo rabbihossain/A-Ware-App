@@ -1,6 +1,8 @@
 package io.a_ware.a_ware;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
@@ -64,7 +66,9 @@ public class TCAppList extends AppCompatActivity {
                 //Log.d("info", "");
             }
         }
-
+        TinyDB tinydb = new TinyDB(this);
+        tinydb.putListString("AwareAppList", itemdetail);
+        /**
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -78,7 +82,21 @@ public class TCAppList extends AppCompatActivity {
 
             }
         });
+        */
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // TODO Auto-generated method stub
+                String Selecteditem = itemdetail.get(+position);
+
+                Intent intent = new Intent(TCAppList.this, logger.class);
+                intent.putExtra("pkgname", Selecteditem);
+                startActivity(intent);
+            }
+        });
+
+        /**
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView parentView, View childView, int position, long id) {
                 String Selecteditem = itemdetail.get(+position);
@@ -89,5 +107,6 @@ public class TCAppList extends AppCompatActivity {
                 return true;
             }
         });
+         */
     }
 }

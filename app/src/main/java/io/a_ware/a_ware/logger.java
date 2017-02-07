@@ -16,10 +16,16 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import eu.chainfire.libsuperuser.Shell;
+
+import static android.R.attr.value;
 
 public class logger extends AppCompatActivity {
 
@@ -70,7 +76,7 @@ public class logger extends AppCompatActivity {
                 suVersion = Shell.SU.version(false);
                 suVersionInternal = Shell.SU.version(true);
                 suResult = Shell.SU.run(new String[] {
-                        "logcat -d  | grep 'ActivityManager' | grep " + appPackageName
+                        "appops get " + appPackageName
                 });
 
             }
@@ -90,11 +96,14 @@ public class logger extends AppCompatActivity {
                     sb.append(line).append(System.getProperty("line.separator"));
                     Log.d("logcatmsg", line);
 
-                    for (int i = 0; i < loggingKeywords.length; i++) {
-                        if(line.toLowerCase().contains(loggingKeywords[i])){
-                            itemname.add(loggingKeywordsExplained[i]);
-                            itemdetail.add("Timestamp: " + line.substring(0,20));
-                        }
+                    if(line.toLowerCase().contains("time")){
+                        itemname.add(line.substring(0, line.indexOf(':')));
+
+                        String timeString = line.substring(line.indexOf("+"), line.indexOf("ago"));
+                        Date DateString = new Date(System.currentTimeMillis() - getMilliSecFromString(timeString.substring(0, timeString.length() - 1)));
+
+                        itemdetail.add("Last Usage: " + String.valueOf(DateString));
+
                     }
 
                 }
@@ -113,5 +122,46 @@ public class logger extends AppCompatActivity {
 
        (new Startup()).setContext(this).execute();
 
+    }
+
+    private long getMilliSecFromString(String value) {
+
+        String[] tokens = value.split("\\+|d|h|m|s|ms");
+        Collections.reverse(Arrays.asList(tokens));
+        TimeModel timeModel = null;
+        if (tokens.length == 5) {
+            timeModel = new TimeModel.TimeModelBuilder()
+                    .setMilliSecond(tokens[0])
+                    .setSecond(tokens[1])
+                    .setMinute(tokens[2])
+                    .setHour(tokens[3])
+                    .setDay(tokens[4])
+                    .build();
+        } else if (tokens.length == 4) {
+            timeModel = new TimeModel.TimeModelBuilder()
+                    .setMilliSecond(tokens[0])
+                    .setSecond(tokens[1])
+                    .setMinute(tokens[2])
+                    .setHour(tokens[3])
+                    .build();
+        } else if (tokens.length == 3) {
+            timeModel = new TimeModel.TimeModelBuilder()
+                    .setMilliSecond(tokens[0])
+                    .setSecond(tokens[1])
+                    .setMinute(tokens[2])
+                    .build();
+        } else if (tokens.length == 2) {
+            timeModel = new TimeModel.TimeModelBuilder()
+                    .setMilliSecond(tokens[0])
+                    .setSecond(tokens[1])
+                    .build();
+        } else {
+            timeModel = new TimeModel.TimeModelBuilder()
+                    .setMilliSecond(tokens[0])
+                    .build();
+        }
+
+
+        return timeModel.getTotalTimeInMillisecond();
     }
 }

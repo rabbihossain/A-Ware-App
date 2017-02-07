@@ -50,11 +50,6 @@
             android:enabled="true"
             android:exported="false" />
 
-        <service
-            android:name=".logWriter"
-            android:enabled="true"
-            android:exported="false" />
-
         <receiver
             android:name=".TCServiceReceiver"
             android:enabled="true"

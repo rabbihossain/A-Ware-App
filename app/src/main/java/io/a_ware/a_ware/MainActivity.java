@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
@@ -35,6 +36,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final SharedPreferences preferences = getSharedPreferences("MainActivity", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = preferences.edit();
+
+        TinyDB tinydb = new TinyDB(getApplicationContext());
+        JSONArray loggedArray = new JSONArray();
+
+        if(preferences.getString("firstRun", "true") == "true"){
+            editor.putString("firstRun", "false");
+            JSONObject loggedObj = new JSONObject();
+
+            try {
+                loggedObj.put("Package", "init");
+                loggedObj.put("Permission", "init");
+                loggedObj.put("Timestamp", "init");
+                loggedArray.put(loggedObj);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            tinydb.putString("TotalLog", loggedArray.toString());
+
+        }
 
         Intent ishintent = new Intent(this, TCService.class);
         startService(ishintent);
@@ -43,12 +65,13 @@ public class MainActivity extends AppCompatActivity {
         alarm.cancel(pintent);
         alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60000, pintent);
 
+
         Intent logintent = new Intent(this, loggerService.class);
         startService(logintent);
         PendingIntent pintent2 = PendingIntent.getService(this, 0, logintent, 0);
         AlarmManager alarm2 = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         alarm2.cancel(pintent2);
-        alarm2.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 3600000, pintent2);
+        alarm2.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 180000, pintent2);
 
 
 
@@ -70,9 +93,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void logClicked(View view) throws IOException, JSONException {
-        Toast.makeText(this, "App might go unresponsive. Don't close app. Please wait.", Toast.LENGTH_LONG).show();
-        Intent writerIntent = new Intent(this, logWriter.class);
-        startService(writerIntent);
+        Toast.makeText(this, "Nothing Here...", Toast.LENGTH_LONG).show();
 
     }
 
