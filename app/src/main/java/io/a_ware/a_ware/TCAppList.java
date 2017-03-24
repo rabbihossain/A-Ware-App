@@ -57,17 +57,9 @@ public class TCAppList extends AppCompatActivity {
                     Log.d("fuck", "no name found for this package");
                 }
 
-                //itemname.add(packageInfo.packageName);
                 itemdetail.add(packageInfo.packageName);
-                //imgid.add(R.drawable.phones);
-                //Log.d("info", "Installed package :" + packageInfo.packageName);
-                //Log.d("info", "Source dir : " + packageInfo.sourceDir);
-                //Log.d("info", "Launch Activity :" + pm.getLaunchIntentForPackage(packageInfo.packageName));
-                //Log.d("info", "");
             }
         }
-        TinyDB tinydb = new TinyDB(this);
-        tinydb.putListString("AwareAppList", itemdetail);
         /**
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

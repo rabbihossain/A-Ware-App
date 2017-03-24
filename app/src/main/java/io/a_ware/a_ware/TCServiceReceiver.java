@@ -15,12 +15,12 @@ public class TCServiceReceiver extends BroadcastReceiver {
         // TODO: This method is called when the BroadcastReceiver is receiving
         // an Intent broadcast.
         //throw new UnsupportedOperationException("Not yet implemented");
-        context.startService(new Intent(context, TCService.class));
+        context.startService(new Intent(context, loggerService.class));
 
-        Intent ishintent = new Intent(context, TCService.class);
+        Intent ishintent = new Intent(context, loggerService.class);
         PendingIntent pintent = PendingIntent.getService(context, 0, ishintent, 0);
         AlarmManager alarm = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         alarm.cancel(pintent);
-        alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60000, pintent);
+        alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 300000, pintent);
     }
 }

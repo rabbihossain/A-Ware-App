@@ -40,12 +40,7 @@
             android:name=".TCAppDetail"
             android:screenOrientation="portrait" />
 
-        <service
-            android:name=".TCService"
-            android:enabled="true"
-            android:exported="false" />
-
-        <service
+       <service
             android:name=".loggerService"
             android:enabled="true"
             android:exported="false" />
@@ -83,6 +78,7 @@
         <activity
             android:name=".RPPGetPass"
             android:screenOrientation="portrait" />
+
         <activity android:name=".logger"></activity>
     </application>
 

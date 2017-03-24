@@ -70,13 +70,8 @@ public class loggerService extends Service {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                suAvailable = Shell.SU.available();
-
-                if(suAvailable){
-
-                }
-                //final String [] permList= new String[]{"COARSE_LOCATION", "FINE_LOCATION", "GPS", "VIBRATE", "READ_CALL_LOG", "READ_CALENDAR", "WIFI_SCAN", "POST_NOTIFICATION", "NEIGHBORING_CELLS", "READ_SMS", "READ_CLIPBOARD", "TAKE_AUDIO_FOCUS", "WAKE_LOCK", "MONITOR_LOCATION", "MONITOR_HIGH_POWER_LOCATION", "TOAST_WINDOW", "READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE", "GET_ACCOUNTS", "RUN_IN_BACKGROUND", "BOOT_COMPLETED", "READ_CONTACTS"};
                 TinyDB tinydb = new TinyDB(getApplicationContext());
+
                 final String totalLog = tinydb.getString("TotalLog");
                 Log.d("totalLog", totalLog);
                 JSONArray loggedArray = null;
@@ -87,8 +82,14 @@ public class loggerService extends Service {
                 }
 
                 final ArrayList<String> appList = tinydb.getListString("AwareAppList");
+
+                suAvailable = Shell.SU.available();
+
+                if(suAvailable){
+                    Log.d("Su", "Found");
+                }
                 for (String appName : appList){
-                    Log.d("nowApp", appName);
+                    Log.d("Now Querying APP", appName);
                     suResult = Shell.SU.run("appops get " +  appName);
                     for(String line : suResult) {
                         if (line.contains("ago")){
@@ -103,7 +104,7 @@ public class loggerService extends Service {
                             loggedObj.put("Package", appName);
                             loggedObj.put("Permission", permName);
                             loggedObj.put("Timestamp", DateString);
-                            if (loggedArray != null && !(loggedArray.toString().contains(loggedObj.toString()))) {
+                            if (!(loggedArray.toString().contains(loggedObj.toString()))) {
                                 loggedArray.put(loggedObj);
                             }
                         } catch (JSONException e) {
@@ -114,22 +115,7 @@ public class loggerService extends Service {
 
                     }
                 }
-                if (loggedArray != null) {
-                    tinydb.putString("TotalLog", loggedArray.toString());
-                }
-                try {
-                    File myFile = new File(Environment.getExternalStorageDirectory().getPath()+"/AwareLog.json");
-                    myFile.createNewFile();
-                    FileOutputStream fOut = new FileOutputStream(myFile);
-                    OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
-                    myOutWriter.write(tinydb.getString("TotalLog"));
-                    myOutWriter.close();
-                    fOut.close();
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                tinydb.putString("TotalLog", loggedArray.toString());
 
             }
         });
