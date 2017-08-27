@@ -7,6 +7,22 @@ import android.os.Bundle;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 public class TCPermDetail extends AppCompatActivity {
 
     @Override
@@ -53,6 +69,68 @@ public class TCPermDetail extends AppCompatActivity {
             }
         });
 
+        TinyDB tinydb = new TinyDB(getApplicationContext());
+
+        BarChart permChart = (BarChart) findViewById(R.id.TCPermDetailChart);
+
+        JSONObject fullPermObj = new JSONObject();
+
+        try {
+            JSONArray fullArray = new JSONArray(tinydb.getString("TotalLog"));
+            for (int i = 1; i < fullArray.length(); i++){
+                JSONObject permData = fullArray.getJSONObject(i);
+                if (Objects.equals(permName, permData.getString("Permission"))){
+                    if(fullPermObj.has(permData.getString("Package"))){
+                        fullPermObj.put(permData.getString("Package"), fullPermObj.getInt(permData.getString("Package")) + 1);
+                    } else {
+                        fullPermObj.put(permData.getString("Package"), 1);
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        
+
+        List<BarEntry> entries = new ArrayList<>();
+        final ArrayList<String> xLabel = new ArrayList<>();
+
+        for (int i = 0; i < fullPermObj.names().length(); i++){
+            try {
+                entries.add(new BarEntry(i, fullPermObj.getInt(fullPermObj.names().getString(i))));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                xLabel.add(fullPermObj.names().getString(i));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        BarDataSet set = new BarDataSet(entries, permName + " Usage by Different Apps");
+
+        BarData data = new BarData(set);
+        XAxis xAxis = permChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
+        xAxis.setLabelRotationAngle(90);
+        xAxis.setTextSize(5f);
+        xAxis.setGranularity(1f);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setDrawGridLines(false);
+        xAxis.setLabelCount(fullPermObj.names().length());
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return xLabel.get((int)value);
+            }
+        });
+        permChart.setData(data);
+        permChart.setVisibleXRangeMaximum(5);
+        permChart.setFitBars(true); // make the x-axis fit exactly all bars
+        permChart.invalidate();
 
     }
 }
