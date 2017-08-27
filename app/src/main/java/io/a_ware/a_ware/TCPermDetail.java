@@ -90,7 +90,7 @@ public class TCPermDetail extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        
+
 
         List<BarEntry> entries = new ArrayList<>();
         final ArrayList<String> xLabel = new ArrayList<>();
@@ -116,7 +116,7 @@ public class TCPermDetail extends AppCompatActivity {
         XAxis xAxis = permChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
         xAxis.setLabelRotationAngle(90);
-        xAxis.setTextSize(5f);
+        xAxis.setTextSize(8f);
         xAxis.setGranularity(1f);
         xAxis.setDrawAxisLine(true);
         xAxis.setDrawGridLines(false);
