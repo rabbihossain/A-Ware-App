@@ -5,8 +5,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
@@ -40,7 +40,7 @@
             android:name=".TCAppDetail"
             android:screenOrientation="portrait" />
 
-       <service
+        <service
             android:name=".loggerService"
             android:enabled="true"
             android:exported="false" />
@@ -78,8 +78,10 @@
         <activity
             android:name=".RPPGetPass"
             android:screenOrientation="portrait" />
-
-        <activity android:name=".logger"></activity>
+        <activity android:name=".logger" />
+        <activity android:name=".PermListGraph" />
+        <activity android:name=".AppListGraph" />
+        <activity android:name=".TCAppDetailGraph" />
     </application>
 
 </manifest>

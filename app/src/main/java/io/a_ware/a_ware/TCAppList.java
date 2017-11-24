@@ -88,63 +88,7 @@ public class TCAppList extends AppCompatActivity {
             }
         });
         */
-
-        BarChart permChart = (BarChart) findViewById(R.id.TCAppChart);
-
-        JSONObject fullPermObj = new JSONObject();
-
-        try {
-            JSONArray fullArray = new JSONArray(tinydb.getString("TotalLog"));
-            for (int i = 1; i < fullArray.length(); i++){
-                JSONObject permData = fullArray.getJSONObject(i);
-                if(fullPermObj.has(permData.getString("Package"))){
-                    fullPermObj.put(permData.getString("Package"), fullPermObj.getInt(permData.getString("Package")) + 1);
-                } else {
-                    fullPermObj.put(permData.getString("Package"), 1);
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        List<BarEntry> entries = new ArrayList<>();
-        final ArrayList<String> xLabel = new ArrayList<>();
-
-        for (int i = 0; i < fullPermObj.names().length(); i++){
-            try {
-                entries.add(new BarEntry(i, fullPermObj.getInt(fullPermObj.names().getString(i))));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                xLabel.add(fullPermObj.names().getString(i));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-        BarDataSet set = new BarDataSet(entries, "Each App Permission Calls");
-
-        BarData data = new BarData(set);
-        XAxis xAxis = permChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
-        xAxis.setLabelRotationAngle(90);
-        xAxis.setTextSize(8f);
-        xAxis.setGranularity(1f);
-        xAxis.setDrawAxisLine(true);
-        xAxis.setDrawGridLines(false);
-        xAxis.setLabelCount(fullPermObj.names().length());
-        xAxis.setValueFormatter(new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return xLabel.get((int)value);
-            }
-        });
-        permChart.setData(data);
-        permChart.setVisibleXRangeMaximum(5);
-        permChart.setFitBars(true); // make the x-axis fit exactly all bars
-        permChart.invalidate();
+        
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -171,5 +115,9 @@ public class TCAppList extends AppCompatActivity {
             }
         });
          */
+    }
+    public void appGraphOpen(View view) {
+        Intent graphintent = new Intent(this, AppListGraph.class);
+        startActivity(graphintent);
     }
 }

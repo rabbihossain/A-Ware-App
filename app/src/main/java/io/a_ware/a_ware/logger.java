@@ -44,6 +44,7 @@ public class logger extends AppCompatActivity {
 
     final ArrayList<String> itemname =new ArrayList<String>();
     final ArrayList<String> itemdetail = new ArrayList<String>();
+    final ArrayList<String> allowdeny = new ArrayList<>();
     final Activity activity = this;
     final String [] loggingKeywords = new String[] {"start","camera","location","gps","bluetooth","kill", "sms", "contact", "call", "wifi", "data"};
     final String [] loggingKeywordsExplained = new String[] {"App Launched", "Camera", "Geolocation", "Geolocation", "Bluetooth", "App Closed", "SMS", "Contacts", "Phone Call", "Wifi Access", "Data Service"};
@@ -111,7 +112,11 @@ public class logger extends AppCompatActivity {
 
                     if(line.toLowerCase().contains("time")){
                         itemname.add(line.substring(0, line.indexOf(':')));
-
+                        if (line.toLowerCase().contains("allow")){
+                            allowdeny.add("allow");
+                        } else {
+                            allowdeny.add("deny");
+                        }
                         String timeString = line.substring(line.indexOf("+"), line.indexOf("ago"));
                         Date DateString = new Date(System.currentTimeMillis() - getMilliSecFromString(timeString.substring(0, timeString.length() - 1)));
 
@@ -123,7 +128,7 @@ public class logger extends AppCompatActivity {
             }
             ListView listView = (ListView) findViewById(R.id.loggerList);
 
-            CustomArrayListAdapterForPerm adapter=new CustomArrayListAdapterForPerm(activity, itemname, itemdetail);
+            CustomArrayListAdapterForAppDetail adapter=new CustomArrayListAdapterForAppDetail(activity, itemname, itemdetail, appPackageName, allowdeny);
             listView.setAdapter(adapter);
         }
     }
@@ -135,70 +140,16 @@ public class logger extends AppCompatActivity {
 
        (new Startup()).setContext(this).execute();
 
+    }
+
+    public void appDetailGraphOpen(View view) {
+
         Bundle bundle = getIntent().getExtras();
         String appPackageName = bundle.getString("pkgname");
 
-        TinyDB tinydb = new TinyDB(getApplicationContext());
-
-        BarChart permChart = (BarChart) findViewById(R.id.TCAppDetailChart);
-
-        JSONObject fullPermObj = new JSONObject();
-
-        try {
-            JSONArray fullArray = new JSONArray(tinydb.getString("TotalLog"));
-            for (int i = 1; i < fullArray.length(); i++){
-                JSONObject permData = fullArray.getJSONObject(i);
-                if (Objects.equals(appPackageName, permData.getString("Package"))){
-                    if(fullPermObj.has(permData.getString("Permission"))){
-                        fullPermObj.put(permData.getString("Permission"), fullPermObj.getInt(permData.getString("Permission")) + 1);
-                    } else {
-                        fullPermObj.put(permData.getString("Permission"), 1);
-                    }
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        List<BarEntry> entries = new ArrayList<>();
-        final ArrayList<String> xLabel = new ArrayList<>();
-
-        for (int i = 0; i < fullPermObj.names().length(); i++){
-            try {
-                entries.add(new BarEntry(i, fullPermObj.getInt(fullPermObj.names().getString(i))));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                xLabel.add(fullPermObj.names().getString(i));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-        BarDataSet set = new BarDataSet(entries, "Permission Calls By " + appPackageName);
-
-        BarData data = new BarData(set);
-        XAxis xAxis = permChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
-        xAxis.setLabelRotationAngle(90);
-        xAxis.setTextSize(8f);
-        xAxis.setGranularity(1f);
-        xAxis.setDrawAxisLine(true);
-        xAxis.setDrawGridLines(false);
-        xAxis.setLabelCount(fullPermObj.names().length());
-        xAxis.setValueFormatter(new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return xLabel.get((int)value);
-            }
-        });
-        permChart.setData(data);
-        permChart.setVisibleXRangeMaximum(5);
-        permChart.setFitBars(true); // make the x-axis fit exactly all bars
-        permChart.invalidate();
-
+        Intent graphintent = new Intent(this, TCAppDetailGraph.class);
+        graphintent.putExtra("pkgname", appPackageName);
+        startActivity(graphintent);
     }
 
     private long getMilliSecFromString(String value) {

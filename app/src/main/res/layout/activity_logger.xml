@@ -8,15 +8,21 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="io.a_ware.a_ware.logger">
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/TCAppDetailChart"
-        android:layout_width="match_parent"
-        android:layout_height="250dp" />
+    <Button
+        android:id="@+id/appDetailGraphButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="18dp"
+        android:onClick="appDetailGraphOpen"
+        android:text="View Graph"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/loggerList"
-        android:layout_below="@+id/TCAppDetailChart"
+        android:layout_below="@+id/appDetailGraphButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 </RelativeLayout>
